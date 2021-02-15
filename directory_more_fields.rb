@@ -1,19 +1,24 @@
 # print header inc. name of Academy
 def print_header
-  puts "The students of Villains Academy".center(50)
-  puts "-------------".center(50)
+    puts "The students of Villains Academy".center(50)
+    puts "-------------".center(50)
 end
 
 #print list of students
 def print(students)
-  students.each_with_index do |student_info, index|
-    puts "#{index+1}. #{student_info[:name]} (#{student_info[:cohort]} cohort).".center(50)
-    puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} likes #{student_info[:hobbies]}.".center(50)
+  if students.length > 0
+    students.each_with_index do |student_info, index|
+      puts "#{index+1}. #{student_info[:name]} (#{student_info[:cohort]} cohort).".center(50)
+      puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} likes #{student_info[:hobbies]}.".center(50)
+    end
+  else puts "No students in database"
   end
 end
 # print number of students
 def print_footer(student_info)
-  puts "Overall, we have #{student_info.length} great students".center(50)
+  if student_info.length > 0
+    puts "Overall, we have #{student_info.length} great students".center(50)
+  end
 end
 
 # method to obtain cohort list from user
