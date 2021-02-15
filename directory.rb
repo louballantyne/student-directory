@@ -6,7 +6,7 @@ end
 
 #print list of students
 def print(students)
-  students.each { |student_info| puts "#{student_info[:name]}, (#{student_info[:cohort]} cohort)" }
+  students.each_with_index { |student_info, index| puts "#{index+1}. #{student_info[:name]}, (#{student_info[:cohort]} cohort)" }
 end
 # print number of students
 def print_footer(student_info)
