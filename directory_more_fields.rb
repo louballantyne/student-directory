@@ -46,7 +46,13 @@ def input_students
       height: inputheight,
       hobbies: inputhobbies
     }
-    puts "Now, we have #{students.length} students. To add more, type another name.".center(50)
+
+    if students.length == 1
+      puts "Now, we have #{students.length} student. To add more, type another name.".center(50)
+    else
+      puts "Now, we have #{students.length} students. To add more, type another name.".center(50)
+    end
+
     puts "Otherwise, press enter.".center(50)
   end
   return students
