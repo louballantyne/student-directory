@@ -7,12 +7,25 @@ end
 #print list of students
 def print(students)
   if students.length > 0
-    students.each_with_index do |student_info, index|
-      puts "#{index+1}. #{student_info[:name]} (#{student_info[:cohort]} cohort).".center(50)
-      if student_info[:pronoun] == "they"
-        puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} like #{student_info[:hobbies]}.".center(50)
-      else
-        puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} likes #{student_info[:hobbies]}.".center(50)
+    cohorts = []
+    students.each do |student_info|
+      if (cohorts.include? (student_info[:cohort])) == false
+        cohorts << student_info[:cohort]
+      end
+    end
+
+    cohorts.each do |cohort|
+      puts "Students in the #{cohort} cohort".center(50)
+      puts "-------------".center(50)
+      students.each_with_index do |student_info, index|
+        if cohort == student_info[:cohort]
+          puts "#{index+1}. #{student_info[:name]} (#{student_info[:cohort]} cohort).".center(50)
+          if student_info[:pronoun] == "they"
+            puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} like #{student_info[:hobbies]}.".center(50)
+          else
+            puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} likes #{student_info[:hobbies]}.".center(50)
+          end
+        end
       end
     end
   else puts "No students in database"
