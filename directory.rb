@@ -64,25 +64,25 @@ def get_students
   ]
     puts "What is the name of the student?".center(50)
     while true
-    inputname = STDIN.gets.chomp
-    break if inputname == ""
-    puts "What is #{inputname}'s cohort?".center(50)
-    inputcohort = STDIN.gets.chomp.downcase
+    name = STDIN.gets.chomp
+    break if name == ""
+    puts "What is #{name}'s cohort?".center(50)
+    cohort = STDIN.gets.chomp.downcase
     while true
-        break if months.include? (inputcohort)
-        puts "Check your spelling. What is #{inputname}'s cohort?".center(50)
-        inputcohort = STDIN.gets.chomp.downcase
+        break if months.include? (cohort)
+        puts "Check your spelling. What is #{name}'s cohort?".center(50)
+        cohort = STDIN.gets.chomp.downcase
     end
-    puts "What is #{inputname}'s country of birth?".center(50)
-    inputcountry = STDIN.gets.chomp
+    puts "What is #{name}'s country of birth?".center(50)
+    country = STDIN.gets.chomp
     puts "What pronoun do they prefer?".center(50)
-    inputpronoun = STDIN.gets.chomp
-    puts "What is #{inputname}'s height?".center(50)
-    inputheight = STDIN.gets.chomp
-    puts "What are #{inputname}'s hobbies?".center(50)
-    inputhobbies = STDIN.gets.chomp
+    pronoun = STDIN.gets.chomp
+    puts "What is #{name}'s height?".center(50)
+    height = STDIN.gets.chomp
+    puts "What are #{name}'s hobbies?".center(50)
+    hobbies = STDIN.gets.chomp
 
-    @students << student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputheight, inputhobbies)
+    @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
 
     plural = "s" if @students.length > 1
 
@@ -92,16 +92,16 @@ def get_students
 end
 
 # add student to a hash with default arguments
-def student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputheight, inputhobbies)
-  inputpronoun = "they" if inputpronoun == ""
-  inputcohort = "november" if inputcohort == ""
+def student_in_hash(name, pronoun, cohort, country, height, hobbies)
+  pronoun = "they" if pronoun == ""
+  cohort = "november" if cohort == ""
   student = {
-    name: inputname,
-    pronoun: inputpronoun,
-    cohort: inputcohort.to_sym,
-    country: inputcountry,
-    height: inputheight,
-    hobbies: inputhobbies
+    name: name,
+    pronoun: pronoun,
+    cohort: cohort.to_sym,
+    country: country,
+    height: height,
+    hobbies: hobbies
   }
   return student
 end
@@ -169,14 +169,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, pronoun, height, country, hobbies = line.chomp.split(",")
-    @students << {
-      name: name,
-      cohort: cohort.to_sym,
-      pronoun: pronoun,
-      height: height,
-      country: country,
-      hobbies: hobbies
-    }
+    student_in_hash(name, pronoun, cohort, country, height, hobbies)
   end
   file.close
   puts "Loaded #{@students.count} students.\n"
