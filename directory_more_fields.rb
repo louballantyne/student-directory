@@ -1,23 +1,25 @@
+@students = []
 # print header inc. name of Academy
 def print_header
     puts "The students of Villains Academy".center(50)
     puts "-------------".center(50)
 end
 
+
+
 #print list of students
-def print(students)
-  if students.length > 0
+def print_students_list
+  if @students.length > 0
     cohorts = []
-    students.each do |student_info|
+    @students.each do |student_info|
       if (cohorts.include? (student_info[:cohort])) == false
         cohorts << student_info[:cohort]
       end
     end
 
     cohorts.each do |cohort|
-      puts "Students in the #{cohort} cohort".center(50)
-      puts "-------------".center(50)
-      students.each_with_index do |student_info, index|
+      puts "Students in the #{cohort} cohort\n".center(50)
+      @students.each_with_index do |student_info, index|
         if cohort == student_info[:cohort]
           puts "#{index+1}. #{student_info[:name]} (#{student_info[:cohort]} cohort).".center(50)
           if student_info[:pronoun] == "they"
@@ -31,17 +33,20 @@ def print(students)
   else puts "No students in database"
   end
 end
+
+
 # print number of students
-def print_footer(student_info)
-  if student_info.length == 1
-    puts "Overall, we have #{student_info.length} great student.".center(50)
-  elsif student_info.length > 1
-    puts "Overall, we have #{student_info.length} great students.".center(50)
+def print_footer
+  if @students.length == 1
+    puts "\nOverall, we have #{@students.length} great student.".center(50)
+  elsif @students.length > 1
+    puts "\nOverall, we have #{@students.length} great students.".center(50)
   end
 end
 
-# method to obtain cohort list from user
 
+
+# method to obtain cohort list from user
 def get_students
   months = [
     "january",
@@ -57,8 +62,7 @@ def get_students
     "november",
     "december"
   ]
-  students = Array.new
-  puts "What is the name of the student?".center(50)
+    puts "What is the name of the student?".center(50)
     while true
     inputname = gets.chomp
     break if inputname == ""
@@ -78,17 +82,16 @@ def get_students
     puts "What are #{inputname}'s hobbies?".center(50)
     inputhobbies = gets.chomp
 
-    students << student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputheight, inputhobbies)
+    @students << student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputheight, inputhobbies)
 
-    if students.length == 1
-      puts "Now, we have #{students.length} student. To add more, type another name.".center(50)
+    if @students.length == 1
+      puts "\nNow, we have #{@students.length} student. To add more, type another name.".center(50)
     else
-      puts "Now, we have #{students.length} students. To add more, type another name.".center(50)
+      puts "\nNow, we have #{@students.length} students. To add more, type another name.".center(50)
     end
 
     puts "Otherwise, press enter.".center(50)
   end
-  return students
 end
 
 # add student to a hash with default arguments
@@ -106,25 +109,35 @@ def student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputhei
   return student
 end
 
+def print_menu
+  puts "\nWhat would you like to do? Please enter a number.".center(50)
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    get_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else puts "I don't know what you mean. Please try again."
+  end
+end
+
 def interactive_menu
-  students = []
   loop do
-    puts "What would you like to do? Please enter a number.".center(50)
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    selection = gets.chomp
-    case selection
-    when "1"
-      students = get_students
-    when "2"
-      print_header
-      print(students)
-      print_footer(students)
-    when "9"
-      exit
-    else puts "I don't know what you mean. Please try again."
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
