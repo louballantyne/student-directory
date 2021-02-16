@@ -106,25 +106,31 @@ def student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputhei
   return student
 end
 
+# print user options to screen
 def print_menu
   puts "\nWhat would you like to do? Please enter a number.".center(50)
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save the students to students.csv"
   puts "9. Exit"
 end
 
+# print the students to the screen
 def show_students
   print_header
   print_students_list
   print_footer
 end
 
+# define what happens depending on selected option
 def process(selection)
   case selection
   when "1"
     get_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
     exit
   else puts "I don't know what you mean. Please try again."
@@ -136,6 +142,23 @@ def interactive_menu
     print_menu
     process(gets.chomp)
   end
+end
+# save student information to a file
+def save_students
+  file = File.open("students.csv", "w")
+  @students.each do |student|
+    student_data = [
+      student[:name],
+      student[:cohort],
+      student[:pronoun],
+      student[:height],
+      student[:country],
+      student[:hobbies]
+    ]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
 end
 
 interactive_menu
