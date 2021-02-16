@@ -1,39 +1,41 @@
 @students = []
+@cohorts = []
 # print header inc. name of Academy
 def print_header
-    puts "The students of Villains Academy".center(50)
-    puts "-------------".center(50)
+  puts "The students of Villains Academy".center(50)
+  puts "-------------".center(50)
 end
 
-
-
-#print list of students
-def print_students_list
-  if @students.length > 0
-    cohorts = []
-    @students.each do |student_info|
-      if (cohorts.include? (student_info[:cohort])) == false
-        cohorts << student_info[:cohort]
-      end
+# compile a list of cohorts
+def list_cohorts
+  @students.each do |student_info|
+    if (@cohorts.include? (student_info[:cohort])) == false
+      @cohorts << student_info[:cohort]
     end
-
-    cohorts.each do |cohort|
-      puts "Students in the #{cohort} cohort\n".center(50)
-      @students.each_with_index do |student_info, index|
-        if cohort == student_info[:cohort]
-          puts "#{index+1}. #{student_info[:name]} (#{student_info[:cohort]} cohort).".center(50)
-          if student_info[:pronoun] == "they"
-            puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} like #{student_info[:hobbies]}.".center(50)
-          else
-            puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} likes #{student_info[:hobbies]}.".center(50)
-          end
-        end
-      end
-    end
-  else puts "No students in database"
   end
 end
 
+#print details about each student
+def print_info_each_student
+  list_cohorts
+  @cohorts.each do |cohort|
+    puts "\nStudents in the #{cohort} cohort\n".center(50)
+    @students.each_with_index do |student_info, index|
+      if cohort == student_info[:cohort]
+        puts "#{index+1}. #{student_info[:name]}".center(50)
+        plural = "s" if student_info[:pronoun] != "they"
+        puts "#{student_info[:name]} is #{student_info[:height]} tall, was born in #{student_info[:country]} and #{student_info[:pronoun]} like#{plural} #{student_info[:hobbies]}."
+      end
+    end
+  end
+end
+# print list of students
+def print_students_list
+  if @students.length > 0
+    print_info_each_student
+  else puts "No students in database"
+  end
+end
 
 # print number of students
 def print_footer
@@ -43,8 +45,6 @@ def print_footer
     puts "\nOverall, we have #{@students.length} great students.".center(50)
   end
 end
-
-
 
 # method to obtain cohort list from user
 def get_students
@@ -84,12 +84,9 @@ def get_students
 
     @students << student_in_hash(inputname, inputpronoun, inputcohort, inputcountry, inputheight, inputhobbies)
 
-    if @students.length == 1
-      puts "\nNow, we have #{@students.length} student. To add more, type another name.".center(50)
-    else
-      puts "\nNow, we have #{@students.length} students. To add more, type another name.".center(50)
-    end
+    plural = "s" if @students.length > 1
 
+    puts "\nNow, we have #{@students.length} student#{plural}. To add more, type another name.".center(50)
     puts "Otherwise, press enter.".center(50)
   end
 end
