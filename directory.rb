@@ -19,7 +19,7 @@ end
 def print_info_each_student
   list_cohorts
   @cohorts.each do |cohort|
-    puts "\nStudents in the #{cohort} cohort\n".center(50)
+    puts "\nStudents in the #{cohort.capitalize} Cohort:\n".center(50)
     @students.each_with_index do |student_info, index|
       if cohort == student_info[:cohort]
         puts "#{index+1}. #{student_info[:name]}".center(50)
