@@ -1,3 +1,4 @@
+require 'CSV'
 @students = []
 @cohorts = []
 # print header inc. name of Academy
@@ -138,7 +139,7 @@ def save_students
   puts "Please enter the filename (students.csv will be used if none given):"
   filename = gets.chomp
   filename = "students.csv" if filename.empty?
-  file = File.open(filename, "w") do |f|
+  CSV.open(filename,"wb") do |file|
     @students.each do |student|
       student = [
         student[:name],
@@ -148,8 +149,7 @@ def save_students
         student[:country],
         student[:hobbies]
       ]
-      csv_line = student.join(",")
-      f.puts csv_line
+      file << student
     end
   end
   puts "Saved #{@students.length} students to file."
@@ -160,11 +160,9 @@ def load_students(filename)
   puts "To load students, please enter the filename (students.csv will be used if none given):"
   filename = gets.chomp
   filename = "students.csv" if filename.empty?
-  file = File.open(filename, "r") do |f|
-    f.readlines.each do |line|
-      name, cohort, pronoun, height, country, hobbies = line.chomp.split(",")
-      @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
-    end
+  CSV.foreach(filename) do |line|
+    name, cohort, pronoun, height, country, hobbies = line.join(",").chomp.split(",")
+    @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
   end
   plural  = "s" if @students.count > 1
   puts "Loaded #{@students.count} student#{plural}.\n"
