@@ -138,20 +138,20 @@ def save_students
   puts "Please enter the filename (students.csv will be used if none given):"
   filename = gets.chomp
   filename = "students.csv" if filename.empty?
-  file = File.open(filename, "w")
-  @students.each do |student|
-    student = [
-      student[:name],
-      student[:cohort],
-      student[:pronoun],
-      student[:height],
-      student[:country],
-      student[:hobbies]
-    ]
-    csv_line = student.join(",")
-    file.puts csv_line
+  file = File.open(filename, "w") do |f|
+    @students.each do |student|
+      student = [
+        student[:name],
+        student[:cohort],
+        student[:pronoun],
+        student[:height],
+        student[:country],
+        student[:hobbies]
+      ]
+      csv_line = student.join(",")
+      f.puts csv_line
+    end
   end
-  file.close
   puts "Saved #{@students.length} students to file."
 end
 
@@ -160,12 +160,12 @@ def load_students(filename)
   puts "To load students, please enter the filename (students.csv will be used if none given):"
   filename = gets.chomp
   filename = "students.csv" if filename.empty?
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort, pronoun, height, country, hobbies = line.chomp.split(",")
-    @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
+  file = File.open(filename, "r") do |f|
+    f.readlines.each do |line|
+      name, cohort, pronoun, height, country, hobbies = line.chomp.split(",")
+      @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
+    end
   end
-  file.close
   plural  = "s" if @students.count > 1
   puts "Loaded #{@students.count} student#{plural}.\n"
 end
