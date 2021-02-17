@@ -15,7 +15,7 @@ def list_cohorts
   end
 end
 
-#print details about each student
+# print details about each student
 def print_info_each_student
   list_cohorts
   @cohorts.each do |cohort|
@@ -91,21 +91,6 @@ def get_students
   end
 end
 
-# add student to a hash with default arguments
-def student_in_hash(name, pronoun, cohort, country, height, hobbies)
-  pronoun = "they" if pronoun == ""
-  cohort = "november" if cohort == ""
-  student = {
-    name: name,
-    pronoun: pronoun,
-    cohort: cohort.to_sym,
-    country: country,
-    height: height,
-    hobbies: hobbies
-  }
-  return student
-end
-
 # print user options to screen
 def print_menu
   puts "\nWhat would you like to do? Please enter a number.".center(50)
@@ -121,6 +106,7 @@ def show_students
   print_header
   print_students_list
   print_footer
+  puts "#{@students.count} students shown."
 end
 
 # define what happens depending on selected option
@@ -135,6 +121,7 @@ def process(selection)
   when "4"
     load_students
   when "9"
+    puts "Goodbye"
     exit
   else puts "I don't know what you mean. Please try again."
   end
@@ -150,7 +137,7 @@ end
 def save_students
   file = File.open("students.csv", "w")
   @students.each do |student|
-    student_data = [
+    student = [
       student[:name],
       student[:cohort],
       student[:pronoun],
@@ -158,10 +145,11 @@ def save_students
       student[:country],
       student[:hobbies]
     ]
-    csv_line = student_data.join(",")
+    csv_line = student.join(",")
     file.puts csv_line
   end
   file.close
+  puts "Saved #{@students.length} students to file."
 end
 
 # load students from File
@@ -169,15 +157,30 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, pronoun, height, country, hobbies = line.chomp.split(",")
-    student_in_hash(name, pronoun, cohort, country, height, hobbies)
+    @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
   end
   file.close
   puts "Loaded #{@students.count} students.\n"
 end
 
+# add student to a hash with default arguments
+def student_in_hash(name, pronoun, cohort, country, height, hobbies)
+  pronoun = "they" if pronoun == ""
+  cohort = "november" if cohort == ""
+  student = {
+    name: name,
+    pronoun: pronoun,
+    cohort: cohort.to_sym,
+    country: country,
+    height: height,
+    hobbies: hobbies
+  }
+  return student
+end
+
 def try_load_students
   filename = ARGV.first
-  return if filename.nil?
+  filename = "students.csv" if filename.nil?
   if File.exists?(filename)
     load_students(filename)
   else
