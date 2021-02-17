@@ -1,0 +1,8 @@
+sheep_array = []
+puts "What are the names of your sheep?"
+sheepname = gets.chomp
+puts "What type of sheep is this?"
+sheeptype = gets.chomp
+sheep_array << {name: sheepname, breed: sheeptype}
+mycode = File.read(__FILE__)
+puts mycode
