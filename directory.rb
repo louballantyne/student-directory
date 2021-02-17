@@ -1,6 +1,20 @@
 require 'CSV'
 @students = []
 @cohorts = []
+@months= [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december"
+]
 # print header inc. name of Academy
 def print_header
   puts "The students of Villains Academy".center(50)
@@ -49,30 +63,16 @@ end
 
 # method to obtain cohort list from user
 def get_students
-  months = [
-    "january",
-    "february",
-    "march",
-    "april",
-    "may",
-    "june",
-    "july",
-    "august",
-    "september",
-    "october",
-    "november",
-    "december"
-  ]
     puts "What is the name of the student?".center(50)
     while true
     name = STDIN.gets.chomp
     break if name == ""
     puts "What is #{name}'s cohort?".center(50)
-    cohort = STDIN.gets.chomp.downcase
+    cohort = STDIN.gets.chomp.capitalize
     while true
-        break if months.include? (cohort)
+        break if @months.include? (cohort.downcase)
         puts "Check your spelling. What is #{name}'s cohort?".center(50)
-        cohort = STDIN.gets.chomp.downcase
+        cohort = STDIN.gets.chomp.capitalize
     end
     puts "What is #{name}'s country of birth?".center(50)
     country = STDIN.gets.chomp
@@ -82,11 +82,9 @@ def get_students
     height = STDIN.gets.chomp
     puts "What are #{name}'s hobbies?".center(50)
     hobbies = STDIN.gets.chomp
-
+    # put student information into hash, then into students array
     @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
-
     plural = "s" if @students.length > 1
-
     puts "\nNow, we have #{@students.length} student#{plural}. To add more, type another name.".center(50)
     puts "Otherwise, press enter.".center(50)
   end
