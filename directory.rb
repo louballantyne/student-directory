@@ -40,9 +40,9 @@ end
 # print number of students
 def print_footer
   if @students.length == 1
-    puts "\nOverall, we have #{@students.length} great student.".center(50)
+    puts "\nOverall, we have #{@students.length} great student.\n".center(50)
   elsif @students.length > 1
-    puts "\nOverall, we have #{@students.length} great students.".center(50)
+    puts "\nOverall, we have #{@students.length} great students.\n".center(50)
   end
 end
 
@@ -96,8 +96,8 @@ def print_menu
   puts "\nWhat would you like to do? Please enter a number.".center(50)
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the students to students.csv"
-  puts "4. Load the students from students.csv"
+  puts "3. Save the students to file"
+  puts "4. Load the students from file"
   puts "9. Exit"
 end
 
@@ -135,7 +135,10 @@ def interactive_menu
 end
 # save student information to a file
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Please enter the filename (students.csv will be used if none given):"
+  filename = gets.chomp
+  filename = "students.csv" if filename.empty?
+  file = File.open(filename, "w")
   @students.each do |student|
     student = [
       student[:name],
@@ -153,14 +156,18 @@ def save_students
 end
 
 # load students from File
-def load_students(filename = "students.csv")
+def load_students(filename)
+  puts "To load students, please enter the filename (students.csv will be used if none given):"
+  filename = gets.chomp
+  filename = "students.csv" if filename.empty?
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, pronoun, height, country, hobbies = line.chomp.split(",")
     @students << student_in_hash(name, pronoun, cohort, country, height, hobbies)
   end
   file.close
-  puts "Loaded #{@students.count} students.\n"
+  plural  = "s" if @students.count > 1
+  puts "Loaded #{@students.count} student#{plural}.\n"
 end
 
 # add student to a hash with default arguments
